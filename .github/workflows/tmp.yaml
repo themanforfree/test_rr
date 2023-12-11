@@ -1,0 +1,27 @@
+name: Benchmark
+
+on:
+  workflow_dispatch: {
+    "inputs": {
+      "EXIT_CODE": {
+        "description": "Exit code",
+        "required": true,
+        "default": "0"
+      }
+    }
+  }
+
+jobs:
+  test_upload:
+    name: test_upload
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: works
+        run: exit ${{ github.event.inputs.EXIT_CODE }}
+      - name: upload
+        if: failure()
+        uses: actions/upload-artifact@v1
+        with:
+          name: main.rs
+          path: src/main.rs
